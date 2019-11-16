@@ -3,6 +3,7 @@ from Tkinter import *
 import tkMessageBox
 from tkFileDialog import *
 import Visualization
+import multiprocessing
 
 
 class MusicPlayerGUI(Frame):
@@ -23,7 +24,9 @@ class MusicPlayerGUI(Frame):
         play_button.grid(row=1, column=0)
 
     def play_music(self):
-        Visualization.start_music(self.music_path_sv.get())
+        path = str(self.music_path_sv.get())
+        t = multiprocessing.Process(target=Visualization.start_music, args=(path,))
+        t.start()
 
 
 class FrameUtil:

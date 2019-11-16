@@ -4,6 +4,7 @@ import os
 import wave
 import numpy as np
 import pygame
+import sys
 from pydub import AudioSegment
 
 old_path = "MusicResources/RISE.mp3"
@@ -36,17 +37,7 @@ def read_music_data(music_path):
     wave_data = wave_data.T
     music_time = nframes * 1/framerate
     print 0.5*50*200
-    return music_time, wave_data[0], wave_data[1]
-
-
-    # music_data_sArray = array.array('h')
-    # size = int(os.path.getsize(file_path) / music_data_sArray.itemsize)
-    # music_data_sArray.fromfile(music_file, size)
-    # music_file.close()
-    # music_data_sArray = music_data_sArray[22:]
-    # print "music data size = ", size
-    # print music_data_sArray
-    # return music_data_sArray
+    return file_path, music_time, wave_data[0], wave_data[1]
 
 
 def main():
