@@ -195,10 +195,3 @@ fabric.properties
 # Android studio 3.1+ serialized cache file
 .idea/caches/build_file_checksums.ser
 
-.gitignore
-MusicPlayerGUI.py
-MusicRead.py
-MusicRead.pyc
-MusicResources/
-Visualization.py
-Visualization.pyc
