@@ -24,7 +24,7 @@ class MusicPlayerGUI(Frame):
         play_button.grid(row=1, column=0)
 
     def play_music(self):
-        path = str(self.music_path_sv.get())
+        path = self.music_path_sv.get()
         t = multiprocessing.Process(target=Visualization.start_music, args=(path,))
         t.start()
 

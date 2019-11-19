@@ -13,7 +13,7 @@ import threading
 position = 0
 
 N_draw = 5000
-draw_step = 25
+draw_step = 10
 draw_interval_ms = 1000/10.0
 
 WIN_WIDTH = 600
