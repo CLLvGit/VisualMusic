@@ -20,6 +20,7 @@ def read_music_data(music_path):
     music_name, music_type = os.path.splitext(music_path)
     file_path = music_path
     if music_type != '.wav':  # 将音乐转换为wav格式
+        print 'try ', music_type, 'to wav'
         song = AudioSegment.from_file(music_path, music_type[1:])
         file_path = music_name+'.wav'
         song.export(file_path, format='wav')

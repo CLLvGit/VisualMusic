@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 from Tkinter import *
 import tkMessageBox
 from tkFileDialog import *
@@ -16,8 +17,8 @@ class MusicPlayerGUI(Frame):
         self.make_main_win()
 
     def make_main_win(self):
-        file_frame = FrameUtil.make_entry_button(self.root, "歌曲", "选择", self.music_path_sv,
-                                    lambda: FrameUtil.fileopen(self.music_path_sv))
+        file_frame = FrameUtil.make_entry_button(self.root, "歌曲(wav/mp3)", "选择", self.music_path_sv,
+                                                 lambda: self.fileopen())
         play_button = FrameUtil.make_button(self.root, "播放", self.play_music)
 
         file_frame.grid(row=0, column=0, sticky=W)
@@ -25,19 +26,26 @@ class MusicPlayerGUI(Frame):
 
     def play_music(self):
         path = self.music_path_sv.get()
+        file_type = path.split('.')[-1]
+        if not os.path.exists(path):
+            tkMessageBox.showerror(u"文件打开失败", u"文件不存在！", parent=self.root)
+            return
+        if file_type not in ['mp3', 'wav', 'MP3', 'WAV']:
+            tkMessageBox.showerror(u"文件类型错误", u"应选择 .wav/.mp3格式文件！", parent=self.root)
+            return
         t = multiprocessing.Process(target=Visualization.start_music, args=(path,))
         t.start()
 
+    def fileopen(self):
+        file_type = [('music', ('MP3', 'WAV'))]
+        self.music_path_sv.set('')
+        print "open file:", os.path.pardir + '/MusicResources/'
+        file_name = askopenfilename(filetypes=file_type, initialdir=os.path.pardir + '/MusicResources/')
+        if file_name:
+            self.music_path_sv.set(file_name)
+
 
 class FrameUtil:
-    @staticmethod
-    def make_text(root, title):
-        frame = Frame(root)
-        label = Label(frame, text=title)
-        text = Text(frame)
-        label.grid(row=0, column=0, stick=W)
-        text.grid(row=1, column=0)
-        return frame, text
 
     @staticmethod
     def make_button(root, text, command):
@@ -62,28 +70,9 @@ class FrameUtil:
         button.grid(row=0, column=1)
         return frame
 
-    @staticmethod
-    def make_value_choose(root, title, values, sv, init):
-        frame = Frame(root)
-        label = Label(frame, width=20, text=title)
-        label.grid(row=0, column=0)
-        sv.set(init)
-        i = 1
-        for t, n in values:
-            rb = Radiobutton(frame, text=t, value=n, variable=sv)
-            rb.grid(row=0, column=i)
-            i += 1
-        return frame
-
-    @staticmethod
-    def fileopen(sv):
-        sv.set('')
-        file_name = askopenfilename()
-        if file_name:
-            sv.set(file_name)
-
 
 def main():
+    multiprocessing.freeze_support()
     root = Tk()
     root.title("播放音乐")
     MusicPlayerGUI(root)
